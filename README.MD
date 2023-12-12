@@ -1,1 +1,1 @@
-This is the repository for SOftware Engineering Assignemnt
+This is the repository for Capstone IOT Project
