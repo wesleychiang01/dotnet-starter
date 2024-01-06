@@ -1,0 +1,78 @@
+﻿@model WebApp_SolarIOT.Models.ParameterEntities
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ParameterEntities</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="latitude" class="control-label"></label>
+                <input asp-for="latitude" class="form-control" />
+                <span asp-validation-for="latitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="longitude" class="control-label"></label>
+                <input asp-for="longitude" class="form-control" />
+                <span asp-validation-for="longitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="accuracy" class="control-label"></label>
+                <input asp-for="accuracy" class="form-control" />
+                <span asp-validation-for="accuracy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="solar_volt" class="control-label"></label>
+                <input asp-for="solar_volt" class="form-control" />
+                <span asp-validation-for="solar_volt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="solar_amp" class="control-label"></label>
+                <input asp-for="solar_amp" class="form-control" />
+                <span asp-validation-for="solar_amp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="light_intensity" class="control-label"></label>
+                <input asp-for="light_intensity" class="form-control" />
+                <span asp-validation-for="light_intensity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="temperature" class="control-label"></label>
+                <input asp-for="temperature" class="form-control" />
+                <span asp-validation-for="temperature" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="battery_volt" class="control-label"></label>
+                <input asp-for="battery_volt" class="form-control" />
+                <span asp-validation-for="battery_volt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="battery_amp" class="control-label"></label>
+                <input asp-for="battery_amp" class="form-control" />
+                <span asp-validation-for="battery_amp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventProcessedUtcTime" class="control-label"></label>
+                <input asp-for="EventProcessedUtcTime" class="form-control" />
+                <span asp-validation-for="EventProcessedUtcTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

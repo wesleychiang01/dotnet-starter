@@ -1,0 +1,150 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .chart-container {
+        width: 100%; /* Set the width to display each chart side by side */
+        float: left; /* Align elements in a row */
+        box-sizing: border-box;
+        padding: 20px;
+    }
+
+    canvas {
+        width: 100% !important; /* Make canvas responsive */
+        height: auto !important;
+    }
+</style>
+
+<br>
+<h1>Battery Status</h1>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="chart-container text-primary">
+                <canvas id="chart1"></canvas>
+            </div>
+        </div>
+        <div class="col">
+            <div class="chart-container text-primary">
+                <canvas id="chart2"></canvas> <!-- Changed ID to chart2 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1>Google Map</h1>
+<div id="googleMap" style="width:100%;height:400px;"></div>
+
+<script>
+
+    function myMap() {
+        var mapProp = {
+            center: new google.maps.LatLng(1.560976, 103.649375),
+            zoom: 15,
+        };
+        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    }
+
+    // Function to generate random data for the chart
+    function generateRandomData() {
+        const data = [];
+        for (let i = 0; i < 7; i++) {
+            data.push(Math.floor(Math.random() * 100));
+        }
+        return data;
+    }
+
+    // Mock dataset 1
+    const data1 = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [{
+            label: 'Dataset 1',
+            data: generateRandomData(),
+            borderColor: 'yellow', // Line color as yellow
+            backgroundColor: 'rgba(255, 255, 255, 1)', // White background
+        }]
+    };
+
+    // Mock dataset 2
+    const data2 = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [{
+            label: 'Dataset 2',
+            data: generateRandomData(),
+            borderColor: 'yellow', // Line color as yellow
+            backgroundColor: 'rgba(255, 255, 255, 1)', // White background
+        }]
+    };
+
+    // Configuration for chart 1
+    const chartConfig1 = {
+        type: 'line',
+        data: data1, // Use data1 for the first chart
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Chart 1'
+                }
+            },
+            scales: {
+                y: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.2)' // Change grid color to white
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.2)' // Change grid color to white
+                    }
+                }
+            }
+        }
+    };
+
+    // Configuration for chart 2
+    const chartConfig2 = {
+        type: 'line',
+        data: data2, // Use data2 for the second chart
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Chart 2'
+                }
+            },
+            scales: {
+                y: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.2)' // Change grid color to white
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.2)' // Change grid color to white
+                    }
+                }
+            }
+        }
+    };
+
+    // Create the first chart
+    const ctx1 = document.getElementById('chart1').getContext('2d');
+    new Chart(ctx1, chartConfig1);
+
+    // Create the second chart
+    const ctx2 = document.getElementById('chart2').getContext('2d');
+    new Chart(ctx2, chartConfig2);
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCz7LjKs0i-n-vkj6iV-cE40eKoNhxoMIQ&callback=myMap"></script>
