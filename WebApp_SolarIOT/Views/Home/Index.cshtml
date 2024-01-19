@@ -14,20 +14,81 @@
         width: 100% !important; /* Make canvas responsive */
         height: auto !important;
     }
+
+    .progress-bar {
+        position: relative;
+    }
+
+    .progress-bar {
+        position: relative;
+    }
+
+    .progress-container {
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .spacer {
+        width: 10px; /* Adjust the width to increase/decrease spacing */
+    }
+
+    .progress-bar {
+        height: 100%;
+    }
+
+    .progress-label {
+        font-size: 14px; /* Adjust the font size as needed */
+    }
+
 </style>
 
 <br>
 <h1>Battery Status</h1>
+<div class="progress-container">
+    <span class="progress-label">0%</span>
+    <div class="spacer"></div>
+    <div class="progress" style="height: 30px; flex: 1;">
+        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+        </div>
+    </div>
+    <div class="spacer"></div>
+    <span class="progress-label">100%</span>
+</div>
+
+<br>
+<h1>Charging Status</h1>
+<br>
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col-12 col-md ml-auto">
+            <button class="btn btn-primary" onclick="navigateToParameterEntities()">Go to Parameter Entities</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md">
             <div class="chart-container text-primary">
                 <canvas id="chart1"></canvas>
             </div>
         </div>
-        <div class="col">
+        <div class="col-12 col-md">
             <div class="chart-container text-primary">
-                <canvas id="chart2"></canvas> <!-- Changed ID to chart2 -->
+                <canvas id="chart2"></canvas> 
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md">
+            <div class="chart-container text-primary">
+                <canvas id="chart3"></canvas>
+            </div>
+        </div>
+        <div class="col-12 col-md">
+            <div class="chart-container text-primary">
+                <canvas id="chart4"></canvas>
             </div>
         </div>
     </div>
@@ -39,111 +100,167 @@
 <script>
 
     function myMap() {
+        var latitude = @Html.Raw(Json.Serialize(Model.latitude));
+        var longitude = @Html.Raw(Json.Serialize(Model.longitude));
+
+        console.log('Latitude:', latitude);
+        console.log('Longitude:', longitude);
+
         var mapProp = {
-            center: new google.maps.LatLng(1.560976, 103.649375),
-            zoom: 15,
+            center: new google.maps.LatLng(latitude, longitude),
+            zoom: 18,
         };
+
         var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+        // Create a marker and set its position
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(latitude, longitude),
+            map: map,
+            title: 'Your Tooltip Text', // Replace with your tooltip text
+        });
+
+        // Create a tooltip (infowindow) for the marker
+        var infowindow = new google.maps.InfoWindow({
+            content: 'Your Tooltip Content', // Replace with your tooltip content
+        });
+
+        // Show the tooltip when the user clicks on the marker
+        marker.addListener('click', function () {
+            infowindow.open(map, marker);
+        });
+
+        // Set the cursor to a pointer when hovering over the marker
+        marker.addListener('mouseover', function () {
+            map.setOptions({ draggableCursor: 'pointer' });
+        });
+
+        // Set the cursor back to the default when not hovering over the marker
+        marker.addListener('mouseout', function () {
+            map.setOptions({ draggableCursor: null });
+        });
+
+        // Create a circle overlay to represent the radius
+        var radiusInMeters = 25; // Set your desired radius in meters
+        var circle = new google.maps.Circle({
+            strokeColor: '#FF0000', // Red outline color
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000', // Red fill color
+            fillOpacity: 0.35,
+            map: map,
+            center: new google.maps.LatLng(latitude, longitude),
+            radius: radiusInMeters,
+        });
     }
 
-    // Function to generate random data for the chart
-    function generateRandomData() {
-        const data = [];
-        for (let i = 0; i < 7; i++) {
-            data.push(Math.floor(Math.random() * 100));
-        }
-        return data;
-    }
+    var batteryVoltData = @Html.Raw(Json.Serialize(ViewBag.BatteryVoltData));
+    var batteryAmpData = @Html.Raw(Json.Serialize(ViewBag.SolarAmpData));
+    var eventTimeData = @Html.Raw(Json.Serialize(ViewBag.EventTimeData));
+    var temperatureData = @Html.Raw(Json.Serialize(ViewBag.TemperatureData));
+    var lightIntensityData = @Html.Raw(Json.Serialize(ViewBag.LightIntensityData));
 
-    // Mock dataset 1
-    const data1 = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+
+    // SolarVolt
+    const solarVoltChart = {
+        labels: eventTimeData,
         datasets: [{
-            label: 'Dataset 1',
-            data: generateRandomData(),
-            borderColor: 'yellow', // Line color as yellow
-            backgroundColor: 'rgba(255, 255, 255, 1)', // White background
+            label: 'Battery Voltage',
+            data: batteryVoltData,
+            borderColor: 'rgba(144, 238, 144, 1)', 
+            backgroundColor: 'rgba(144, 238, 144, 1)', 
         }]
     };
 
-    // Mock dataset 2
-    const data2 = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        datasets: [{
-            label: 'Dataset 2',
-            data: generateRandomData(),
-            borderColor: 'yellow', // Line color as yellow
-            backgroundColor: 'rgba(255, 255, 255, 1)', // White background
-        }]
-    };
-
-    // Configuration for chart 1
-    const chartConfig1 = {
+    // SolarVolt
+    const solarVoltChartConfig = {
         type: 'line',
-        data: data1, // Use data1 for the first chart
+        data: solarVoltChart,
         options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Chart 1'
-                }
-            },
-            scales: {
-                y: {
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.2)' // Change grid color to white
-                    }
-                },
-                x: {
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.2)' // Change grid color to white
-                    }
-                }
-            }
+            // Add necessary options for the chart display
+            // (e.g., responsive, legend, scales)
         }
     };
 
-    // Configuration for chart 2
-    const chartConfig2 = {
+    // Light Intensity
+    const lightChart = {
+        labels: eventTimeData,
+        datasets: [{
+            label: 'Light Intensity',
+            data: lightIntensityData,
+            borderColor: 'yellow', // Change line color to grey for solar ampere
+            backgroundColor: 'rgba(255, 255, 0, 1)', // Grey background color with opacity
+        }]
+    };
+
+    // Light Intensity
+    const lightChartConfig = {
         type: 'line',
-        data: data2, // Use data2 for the second chart
+        data: lightChart,
         options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Chart 2'
-                }
-            },
-            scales: {
-                y: {
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.2)' // Change grid color to white
-                    }
-                },
-                x: {
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.2)' // Change grid color to white
-                    }
-                }
-            }
+            // Add necessary options for the chart display
+            // (e.g., responsive, legend, scales)
+        }
+    };
+
+    //ampere chart
+    const batteryAmpChart = {
+        labels: eventTimeData,
+        datasets: [{
+            label: 'Battery Ampere',
+            data: batteryAmpData, // Make sure you fetch the data for battery amp
+            borderColor: 'red', // Change line color for battery amp
+            backgroundColor: 'rgba(255, 0, 0, 1)', // Red background color with opacity
+        }]
+    };
+
+    // ampere chart
+    const batteryAmpChartConfig = {
+        type: 'line',
+        data: batteryAmpChart,
+        options: {
+            // Add necessary options for the chart display
+        }
+    };
+
+    // temperature
+    const temperatureChart = {
+        labels: eventTimeData,
+        datasets: [{
+            label: 'Temperature',
+            data: temperatureData, // Make sure you fetch the data for temperature
+            borderColor: 'orange',
+            backgroundColor: 'rgba(255, 165, 0, 1)',
+        }]
+    };
+
+    // temperature
+    const temperatureChartConfig = {
+        type: 'line',
+        data: temperatureChart,
+        options: {
+            // Add necessary options for the chart display
         }
     };
 
     // Create the first chart
-    const ctx1 = document.getElementById('chart1').getContext('2d');
-    new Chart(ctx1, chartConfig1);
+    const solarVoltCtx = document.getElementById('chart1').getContext('2d');
+    new Chart(solarVoltCtx, solarVoltChartConfig);
 
-    // Create the second chart
-    const ctx2 = document.getElementById('chart2').getContext('2d');
-    new Chart(ctx2, chartConfig2);
+    const solarAmpCtx = document.getElementById('chart2').getContext('2d');
+    new Chart(solarAmpCtx, lightChartConfig);
+
+    // Create the third chart (battery amp)
+    const batteryAmpCtx = document.getElementById('chart3').getContext('2d');
+    new Chart(batteryAmpCtx, batteryAmpChartConfig);
+
+    // Create the fourth chart (temperature)
+    const temperatureCtx = document.getElementById('chart4').getContext('2d');
+    new Chart(temperatureCtx, temperatureChartConfig);
+
+    function navigateToParameterEntities() {
+        window.location.href = '/ParameterEntities';
+    }
 
 </script>
 

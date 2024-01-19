@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
+
 <h1>Index</h1>
 
 <p>
@@ -45,6 +46,11 @@
             <th></th>
         </tr>
     </thead>
+    <style>
+        th, td {
+            color: white !important;
+        }
+    </style>
     <tbody>
 @foreach (var item in Model) {
         <tr>

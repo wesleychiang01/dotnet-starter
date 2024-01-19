@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\wesle\\source\\repos\\WebApp_SolarIOT\\WebApp_SolarIOT\\WebApp_SolarIOT.csproj": {}
+    "C:\\Users\\wesle\\source\\repos\\Dotnet_dashboard\\WebApp_SolarIOT\\WebApp_SolarIOT.csproj": {}
   },
   "projects": {
-    "C:\\Users\\wesle\\source\\repos\\WebApp_SolarIOT\\WebApp_SolarIOT\\WebApp_SolarIOT.csproj": {
+    "C:\\Users\\wesle\\source\\repos\\Dotnet_dashboard\\WebApp_SolarIOT\\WebApp_SolarIOT.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\wesle\\source\\repos\\WebApp_SolarIOT\\WebApp_SolarIOT\\WebApp_SolarIOT.csproj",
+        "projectUniqueName": "C:\\Users\\wesle\\source\\repos\\Dotnet_dashboard\\WebApp_SolarIOT\\WebApp_SolarIOT.csproj",
         "projectName": "WebApp_SolarIOT",
-        "projectPath": "C:\\Users\\wesle\\source\\repos\\WebApp_SolarIOT\\WebApp_SolarIOT\\WebApp_SolarIOT.csproj",
+        "projectPath": "C:\\Users\\wesle\\source\\repos\\Dotnet_dashboard\\WebApp_SolarIOT\\WebApp_SolarIOT.csproj",
         "packagesPath": "C:\\Users\\wesle\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\wesle\\source\\repos\\WebApp_SolarIOT\\WebApp_SolarIOT\\obj\\",
+        "outputPath": "C:\\Users\\wesle\\source\\repos\\Dotnet_dashboard\\WebApp_SolarIOT\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\wesle\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,14 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.12, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
+              "target": "Package",
+              "version": "[7.0.12, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.14, )"
